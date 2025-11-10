@@ -5,7 +5,11 @@ void moveForward(float distance)
   MotorRight.setVelocity(70, percent);
   MotorLeft.spin(forward);
   MotorRight.spin(forward);
-  while (MotorLeft.position(degrees) < ((distance/200.00)*360)){}
+  while (MotorLeft.position(degrees) < ((distance/200.00)*360))
+  {
+    obstacleDetection(MotorLeft.position(degrees));
+    wait(2, seconds); // check for obstacles every 2 seconds
+  }
   MotorLeft.stop;
   MotorRight.stop;
 }
