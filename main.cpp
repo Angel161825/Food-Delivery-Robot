@@ -1,11 +1,13 @@
+
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
-  float tableCoords[3][2] = {{200.0, 0.0}, {200.0, -200.0}, {0.0, -200.0}}; // Coordinates in cm, each row represents a table
-  float avgCount = 0.0;
-  float deliveryTimeAvg = 0.0;
-// While the close program button hasnt been pressed
+  float tableCoords[3][2] = {{200, 0}, {200, -200}, {0, -200}}; // Coordinates in cm, each row represents a table
+  float avgCount = 0;
+  float deliveryTimeAvg = 0;
+  float feedbackAvg = 0;
+
   while(!Controller.ButtonFDown.pressing())
   {
     Brain.Timer.reset()
@@ -25,7 +27,7 @@ int main() {
     moveForward([table,1]);
     alignTable();
     conveyorMove();
-    feedback();
+    feedbackAvg += feedback();
     
     // Going back to kitchen
     if (table == 0)
@@ -51,8 +53,11 @@ int main() {
     avgCount ++;
   }
   deliveryTimeAvg = deliveryTimeAvg/avgCount;
-  Brain.Screen.print("%f", deliveryTimeAvg);
+  feedbackAvg = feedbackAvg/avgCount
+  Brain.Screen.setCursor(2, 1);
+  Brain.Screen.print("Delivery Time Avg: %f", deliveryTimeAvg);
+  Brain.Screen.setCursor(4, 1);
+  Brain.Screen.print("Rating avg: %f", feedbackAvg);
+  wait(10, seconds);
   Brain.programStop();
-  
 }
-
