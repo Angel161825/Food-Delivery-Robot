@@ -8,7 +8,7 @@ int feedback ( )
   while (rating == -1)
   {
     Brain.Timer.reset();
-    while (TouchLED9.pressing())
+    while (TouchLED12.pressing())
     {
     }
     double secondsPressed = Brain.Timer.value();
@@ -29,7 +29,7 @@ int feedback ( )
     double resetRating = Brain.Timer.value();
     while (Brain.Timer.value() < resetRating + 500)
     {
-      if (TouchLED9.pressing())
+      if (TouchLED12.pressing())
       {
         rating = -1;
         Brain.Screen.print("Please renter the feedback");
@@ -39,3 +39,4 @@ int feedback ( )
   }
   return rating;
 }
+
