@@ -27,7 +27,7 @@ int main()
     // Move forward y cm
     moveForward(tableCoords[table][1]);
     alignTable();
-    conveyorMove();
+    unload(1000.0, 200.0);
     feedbackAvg += feedback();
     
     // Going back to kitchen
