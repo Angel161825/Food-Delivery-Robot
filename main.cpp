@@ -2,6 +2,7 @@
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+  configureAllSensors();
 
   float tableCoords[3][2] = {{200, 0}, {200, -200}, {0, -200}}; // Coordinates in cm, each row represents a table
   float avgCount = 0;
