@@ -10,6 +10,6 @@ void moveForward(float distance)
     obstacleDetection(MotorLeft.position(degrees));
     wait(2, seconds); // check for obstacles every 2 seconds
   }
-  MotorLeft.stop;
-  MotorRight.stop;
+  MotorLeft.stop();
+  MotorRight.stop();
 }
