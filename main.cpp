@@ -16,7 +16,8 @@ int main()
 
     int table = controllerUsage();
     // Move forward x cm and reset robot's current coords
-    moveForward((tableCoords[table][0]));
+
+    moveForward((tableCoords[table][0]), 0);
     currentCoords[0] = table;
 
     // If it hasn't reach the right y coordinate, turn 90 degrees
@@ -25,31 +26,19 @@ int main()
       rotateRobot(90, 50);
     }
     // Move forward y cm
-    moveForward(tableCoords[table][1]);
+    moveForward(tableCoords[table][1], 0);
+
+    // At the table
     alignTable();
     unload(1000.0, 200.0);
     feedbackAvg += feedback();
     
     // Going back to kitchen
-    if (table == 0)
-    {
-      rotateRobot(180,50);
-    }
-    else if (table == 1 || table == 2)
-    {
-      rotateRobot(-180,50);
-    }
+
     // Move back in same y amount, then x amount
-    moveForward(tableCoords[table][1]);
-    moveForward(tableCoords[table][0]);
-    if (table == 2)
-    {
-      rotateRobot(-90,50);
-    }
-    else
-    {
-      rotateRobot(180,50);
-    }
+    moveForward(tableCoords[table][1],1);
+    moveForward(tableCoords[table][0],1);
+    
     deliveryTimeAvg += Brain.Timer.value();
     avgCount ++;
   }
@@ -62,4 +51,5 @@ int main()
   wait(10, seconds);
   Brain.programStop();
 }
+
 
