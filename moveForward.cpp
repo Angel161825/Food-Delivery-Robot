@@ -1,10 +1,10 @@
-void moveForward(float distance, int reverse)
+void moveForward(float distance, int direction)
 {
   MotorLeft.setPosition(0, degrees);
   MotorLeft.setVelocity(70, percent);
   MotorRight.setVelocity(70, percent);
 
-  if (reverse = 1)
+  if (direction == 1)
   {
     MotorLeft.spin(reverse);
     MotorRight.spin(reverse);
