@@ -1,14 +1,14 @@
 int feedback ( )
 {
   double time = Brain.Timer.value();
-  Brain.Screen.print("It took %d"+ time + "seconds to deliver the food");
+  Brain.Screen.print("It took %d", time, "seconds to deliver the food");
   Brain.Screen.newLine();
   Brain.Screen.print("Your feedback would be greatly appreciated!");
   int rating = -1;
   while (rating == -1)
   {
     Brain.Timer.reset();
-    while (TouchLED3,pressing())
+    while (TouchLED9.pressing())
     {
     }
     double secondsPressed = Brain.Timer.value();
@@ -24,12 +24,12 @@ int feedback ( )
     {
       rating = 1;
     }
-    Brain.Screen.print("You have given us %d" +rating + "stars out of 3! If you want to change your rating please tap the touch LED");
+    Brain.Screen.print("You have given us %d", rating, "stars out of 3! If you want to change your rating please tap the touch LED");
     Brain.Screen.newLine();
     double resetRating = Brain.Timer.value();
     while (Brain.Timer.value() < resetRating + 500)
     {
-      if (TouchLED3.pressing())
+      if (TouchLED9.pressing())
       {
         rating = -1;
         Brain.Screen.print("Please renter the feedback");
@@ -38,7 +38,4 @@ int feedback ( )
     }
   }
   return rating;
-
-
 }
-
