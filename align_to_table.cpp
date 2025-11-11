@@ -7,7 +7,7 @@ void alignTable()
   MotorLeft.spin(forward);
   MotorRight.spin(forward);
   // Keep moving forward while the bumper is not pressed and the distance sensor isn't close
-  while (!(Bumper7.pressing() || Distance4.objectDistance(mm) > distanceTol)){}
+  while (!(Bumper7.pressing() || Distance4.objectDistance(mm) < distanceTol)){}
   MotorLeft.stop();
   MotorRight.stop();
   
