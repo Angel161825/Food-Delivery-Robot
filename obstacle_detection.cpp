@@ -6,12 +6,13 @@ void obstacleDetection(float rotations)
                                           // (in this case, it needs to be more than 5 turns away from the table)
 
   // "If the distance sensor detects something equal or closer to it than the tolerance and the robot is far enough from the table"
-  if ( (Distance4.objectDistance(mm) <= objectTol) && (MotorLeft.position(degrees) < rotationsTol) )
+  if ( (Distance5.objectDistance(mm) <= objectTol) && (MotorLeft.position(degrees) < rotationsTol) )
   {
     MotorLeft.stop();
     MotorRight.stop();
-    while(Distance4.objectDistance(mm) <= objectTol){} // waiting until object leaves
+    while(Distance5.objectDistance(mm) <= objectTol){} // waiting until object leaves
     //call movement function again here
   }
 
 }
+
