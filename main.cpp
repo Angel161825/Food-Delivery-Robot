@@ -1,5 +1,5 @@
-
-int main() {
+int main() 
+{
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   configureAllSensors();
@@ -11,21 +11,21 @@ int main() {
 
   while(!Controller.ButtonFDown.pressing())
   {
-    Brain.Timer.reset()
+    Brain.Timer.reset();
     float currentCoords [2] = {0,0};
 
     int table = controllerUsage();
     // Move forward x cm and reset robot's current coords
-    moveForward([table, 0]);
+    moveForward((tableCoords[table][0]));
     currentCoords[0] = table;
 
     // If it hasn't reach the right y coordinate, turn 90 degrees
-    if(currentCoords[1] != tableCoords[table,1])
+    if(currentCoords[1] != tableCoords[table][1])
     {
       rotateRobot(90, 50);
     }
     // Move forward y cm
-    moveForward([table,1]);
+    moveForward(tableCoords[table][1]);
     alignTable();
     conveyorMove();
     feedbackAvg += feedback();
@@ -40,8 +40,8 @@ int main() {
       rotateRobot(-180,50);
     }
     // Move back in same y amount, then x amount
-    moveForward([table,1]);
-    moveForward([table, 0]);
+    moveForward(tableCoords[table][1]);
+    moveForward(tableCoords[table][0]);
     if (table == 2)
     {
       rotateRobot(-90,50);
@@ -54,7 +54,7 @@ int main() {
     avgCount ++;
   }
   deliveryTimeAvg = deliveryTimeAvg/avgCount;
-  feedbackAvg = feedbackAvg/avgCount
+  feedbackAvg = feedbackAvg/avgCount;
   Brain.Screen.setCursor(2, 1);
   Brain.Screen.print("Delivery Time Avg: %f", deliveryTimeAvg);
   Brain.Screen.setCursor(4, 1);
