@@ -38,10 +38,11 @@ int main()
     // Move back in same y amount, then x amount
     moveForward(tableCoords[table][1],1);
     moveForward(tableCoords[table][0],1);
-    
+
     deliveryTimeAvg += Brain.Timer.value();
     avgCount ++;
   }
+
   deliveryTimeAvg = deliveryTimeAvg/avgCount;
   feedbackAvg = feedbackAvg/avgCount;
   Brain.Screen.setCursor(2, 1);
