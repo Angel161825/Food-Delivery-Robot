@@ -4,7 +4,7 @@ int main()
   vexcodeInit();
   configureAllSensors();
 
-  float tableCoords[3][2] = {{200, 0}, {200, -200}, {0, -200}}; // Coordinates in cm, each row represents a table
+  float tableCoords[3][2] = {{20000, 0}, {20000, -20000}, {0, -20000}}; // Coordinates in mm, each row represents a table
   float avgCount = 0;
   float deliveryTimeAvg = 0;
   float feedbackAvg = 0;
@@ -62,3 +62,4 @@ int main()
   wait(10, seconds);
   Brain.programStop();
 }
+
