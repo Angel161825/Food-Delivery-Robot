@@ -17,8 +17,8 @@ void moveForward(float distance, int direction)
   
   while (MotorLeft.position(degrees) < ((distance/200.00)*360))
   {
-    obstacleDetection(MotorLeft.position(degrees));
-    wait(2, seconds); // check for obstacles every 2 seconds
+    obstacleDetection((distance/200.00)*360);
+    //wait(2, seconds); // check for obstacles every 2 seconds
   }
   MotorLeft.stop();
   MotorRight.stop();
