@@ -1,4 +1,4 @@
-void moveForward(float distance, int direction)
+void move(float distance, int direction)
 {
   MotorLeft.setPosition(0, degrees);
   MotorLeft.setVelocity(70, percent);
