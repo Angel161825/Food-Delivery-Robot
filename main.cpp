@@ -4,7 +4,7 @@ int main()
   vexcodeInit();
   configureAllSensors();
 
-  float tableCoords[3][2] = {{20000, 0}, {20000, -20000}, {0, -20000}}; // Coordinates in mm, each row represents a table
+  float tableCoords[3][2] = {{2000, 0}, {2000, -2000}, {0, -2000}}; // Coordinates in mm, each row represents a table
   float avgCount = 0;
   float deliveryTimeAvg = 0;
   float feedbackAvg = 0;
@@ -15,6 +15,7 @@ int main()
     float currentCoords [2] = {0,0};
 
     int table = controllerUsage();
+    Brain.Screen.print("working");
     // Move forward x cm and reset robot's current coords
 
     moveForward((tableCoords[table][0]), 0);
@@ -26,7 +27,7 @@ int main()
       rotateRobot(90, 50);
     }
     // Move forward y cm
-    moveForward(tableCoords[table][1], 0);
+    moveForward(abs(tableCoords[table][1]), 0);
 
     // At the table
     alignTable();
