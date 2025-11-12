@@ -33,7 +33,7 @@ motor MotorRight = motor(PORT6, true);
 bumper Bumper2 = bumper(PORT2);
 touchled TouchLED12 = touchled(PORT12);
 controller Controller = controller();
-motor MotorConveyorLeft = motor(PORT3, false);
+motor MotorConveyorLeft = motor(PORT3, true);
 motor MotorConveyorRight = motor(PORT4, false);
 distance Distance5 = distance(PORT5);
 
@@ -121,12 +121,13 @@ void alignTable()
   Brain.Screen.print("align");
   float distanceTol = 5.00; // Change after experimentation
 
-  MotorLeft.setVelocity(30, percent);
-  MotorRight.setVelocity(30, percent);
+  MotorLeft.setVelocity(40, percent);
+  MotorRight.setVelocity(40, percent);
   MotorLeft.spin(forward);
   MotorRight.spin(forward);
+
   // Keep moving forward while the bumper is not pressed and the distance sensor isn't close
-  while (!(Bumper2.pressing() || Distance5.objectDistance(mm) < distanceTol)){}
+  while (!Bumper2.pressing() && !(Distance5.objectDistance(mm) < distanceTol)){}
   MotorLeft.stop();
   MotorRight.stop();
   
@@ -183,7 +184,6 @@ void obstacleDetection(float rotations)
   // "If the distance sensor detects something equal or closer to it than the tolerance and the robot is far enough from the table"
   if ( (Distance5.objectDistance(mm) <= objectTol) && (MotorLeft.position(degrees) < rotationsTol) )
   {
-    Brain.Screen.print("object detected");
     MotorLeft.setVelocity(0, percent);
     MotorRight.setVelocity(0, percent);
     while(Distance5.objectDistance(mm) <= objectTol){} // waiting until object leaves
@@ -193,11 +193,11 @@ void obstacleDetection(float rotations)
 
 }
 
-void move(float distance, int direction)
+void moveForward(float distance, int direction)
 {
   MotorLeft.setPosition(0, degrees);
-  MotorLeft.setVelocity(70, percent);
-  MotorRight.setVelocity(70, percent);
+  MotorLeft.setVelocity(50, percent);
+  MotorRight.setVelocity(50, percent);
 
   if (direction == 1)
   {
@@ -225,14 +225,18 @@ int feedback ( )
   Brain.Screen.print("It took %d", time, "seconds to deliver the food");
   Brain.Screen.newLine();
   Brain.Screen.print("Your feedback would be greatly appreciated!");
+  Brain.Screen.newLine();
   int rating = -1;
   while (rating == -1)
   {
-    Brain.Timer.reset();
+    while(!TouchLED12.pressing()) {}
+    //Brain.Timer.reset();
+    timer feedbackTimer;
+    feedbackTimer.reset();
     while (TouchLED12.pressing())
     {
     }
-    double secondsPressed = Brain.Timer.value();
+    double secondsPressed = feedbackTimer.value();
     if (secondsPressed < 2.00)
     {
       rating = 3;
@@ -248,7 +252,7 @@ int feedback ( )
     Brain.Screen.print("You have given us %d", rating, "stars out of 3! If you want to change your rating please tap the touch LED");
     Brain.Screen.newLine();
     double resetRating = Brain.Timer.value();
-    while (Brain.Timer.value() < resetRating + 500)
+    /*while (Brain.Timer.value() < resetRating + 5000)
     {
       if (TouchLED12.pressing())
       {
@@ -257,6 +261,7 @@ int feedback ( )
         Brain.Screen.newLine();
       }
     }
+    */
   }
   return rating;
 }
@@ -264,8 +269,18 @@ int feedback ( )
 void unload(double distance, double CIRCUMFERENCE) // Motors are reverse
 {
   double turn = distance/CIRCUMFERENCE + 0.1; // Experimental value should be used
+  MotorConveyorLeft.setVelocity(10, percent);
+  MotorConveyorRight.setVelocity(10, percent);
+  MotorConveyorLeft.setPosition(0, degrees);
+  MotorConveyorLeft.spin(forward);
+  MotorConveyorRight.spin(forward);
+  while (MotorConveyorLeft.position(degrees) < (turn*360.0)){}
+  /*
   MotorConveyorLeft.spinFor(forward, turn, turns);
   MotorConveyorRight.spinFor(forward, turn, turns);
+  */
+  MotorConveyorRight.stop(coast);
+  MotorConveyorLeft.stop(coast);
 }
 
 int main() 
@@ -285,10 +300,9 @@ int main()
     float currentCoords [2] = {0,0};
 
     int table = controllerUsage();
-    Brain.Screen.print("working");
     // Move forward x cm and reset robot's current coords
 
-    move((tableCoords[table][0]), 0);
+    moveForward((tableCoords[table][0]), 0);
     currentCoords[0] = table;
 
     // If it hasn't reach the right y coordinate, turn 90 degrees
@@ -297,22 +311,25 @@ int main()
       rotateRobot(90, 50);
     }
     // Move forward y cm
-    move(abs(tableCoords[table][1]), 0);
+    moveForward(abs(tableCoords[table][1]), 0);
 
     // At the table
     alignTable();
-    unload(1000.0, 200.0);
+    unload(200.0, 200.0);
+    Brain.playSound(tada);
+  
     feedbackAvg += feedback();
     
     // Going back to kitchen
 
     // Move back in same y amount, then x amount
-    move(tableCoords[table][1],1);
-    move(tableCoords[table][0],1);
+    moveForward(tableCoords[table][1],1);
+    moveForward(tableCoords[table][0],1);
 
     deliveryTimeAvg += Brain.Timer.value();
     avgCount ++;
   }
+
 
   deliveryTimeAvg = deliveryTimeAvg/avgCount;
   feedbackAvg = feedbackAvg/avgCount;
@@ -321,5 +338,7 @@ int main()
   Brain.Screen.setCursor(4, 1);
   Brain.Screen.print("Rating avg: %f", feedbackAvg);
   wait(10, seconds);
+
+  unload(400.0,200.0);
   Brain.programStop();
 }
