@@ -18,7 +18,7 @@ int main()
     Brain.Screen.print("working");
     // Move forward x cm and reset robot's current coords
 
-    moveForward((tableCoords[table][0]), 0);
+    move((tableCoords[table][0]), 0);
     currentCoords[0] = table;
 
     // If it hasn't reach the right y coordinate, turn 90 degrees
@@ -27,7 +27,7 @@ int main()
       rotateRobot(90, 50);
     }
     // Move forward y cm
-    moveForward(abs(tableCoords[table][1]), 0);
+    move(abs(tableCoords[table][1]), 0);
 
     // At the table
     alignTable();
@@ -37,8 +37,8 @@ int main()
     // Going back to kitchen
 
     // Move back in same y amount, then x amount
-    moveForward(tableCoords[table][1],1);
-    moveForward(tableCoords[table][0],1);
+    move(tableCoords[table][1],1);
+    move(tableCoords[table][0],1);
 
     deliveryTimeAvg += Brain.Timer.value();
     avgCount ++;
